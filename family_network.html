@@ -536,7 +536,7 @@ document.querySelectorAll(".seg button").forEach(b => b.onclick = () => show(b.d
 let saved = location.hash.slice(1) || null; if (!saved) try { saved = localStorage.getItem("famtree-view"); } catch (e) {}
 
 buildTree();
-show(["tree", "cards", "gen"].includes(saved) ? saved : "tree");
+show(["tree", "cards", "gen"].includes(saved) ? saved : "cards");
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { buildTree(); fitted = false; if (current === "tree") fit(); runSearch(); });
 window.addEventListener("resize", () => { if (current === "tree") fit(); });
 </script>
