@@ -2,7 +2,8 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#060912">
 <title>แผนผังเครือญาติ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
@@ -93,8 +94,10 @@ h1{font-family:Kanit;font-weight:600;font-size:clamp(30px,5vw,46px);line-height:
 .bbar button:hover{color:var(--ink);border-color:var(--stroke-2)}
 .bbar button.on{color:#1a1204;background:linear-gradient(135deg,var(--g1),#fde68a);border-color:transparent;box-shadow:0 0 16px rgba(251,191,36,.35)}
 .bbar button.on b{color:#1a1204}
-.branch-no{display:flex;align-items:center;gap:8px;font-family:Kanit;font-weight:300;font-size:12px;letter-spacing:.2em;color:var(--muted);margin-bottom:8px}
+.branch-no{display:flex;align-items:center;gap:8px;font-family:Kanit;font-weight:300;font-size:12px;letter-spacing:.2em;color:var(--muted);margin-bottom:8px;
+  width:100%;background:none;border:0;padding:0;text-align:left;cursor:default;-webkit-tap-highlight-color:transparent}
 .branch-no b{font-weight:500;color:var(--accent);font-size:14px;letter-spacing:.05em}
+.branch-no .bsum,.branch-no .bcnt,.branch-no .chev{display:none}
 .tree,.tree ul{list-style:none;margin:0;padding:0}
 .tree ul{padding-left:26px;position:relative}
 .tree li{position:relative;padding:4px 0}
@@ -153,10 +156,60 @@ h1{font-family:Kanit;font-weight:600;font-size:clamp(30px,5vw,46px);line-height:
 
 footer{margin-top:26px;text-align:center;color:var(--dim);font-size:12.5px}
 
+.hint .m{display:none}
+
+/* ---------- mobile ---------- */
 @media (max-width:600px){
-  .chip{white-space:normal}
-  .seg button span{display:none}
+  body{font-size:14px}
+  .wrap{padding:18px 12px calc(100px + env(safe-area-inset-bottom))}
+  header{gap:12px;margin-bottom:14px}
+  header>div:first-child{width:100%}
+  h1{font-size:30px}
+  .stats{width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .stat{min-width:0;padding:8px 6px;text-align:center;border-radius:12px}
+  .stat b{font-size:19px}
+  .stat span{font-size:11px}
+
+  /* toolbar: search only on top, view switch becomes bottom tab bar */
+  .toolbar{top:8px;padding:6px;border-radius:14px;margin-bottom:12px;background:rgba(11,18,34,.92);backdrop-filter:none}
+  .search{max-width:none;min-width:0}
+  .search input{font-size:16px}
   .legend{display:none}
+  .seg{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:30;gap:6px;padding:6px;border-radius:20px;
+    background:rgba(14,21,40,.84);border:1px solid var(--stroke-2);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 12px 32px rgba(0,0,0,.5)}
+  .seg button{flex:1;flex-direction:column;justify-content:center;gap:3px;padding:8px 4px;font-size:11.5px;border-radius:14px;-webkit-tap-highlight-color:transparent}
+  .seg svg{width:20px;height:20px}
+
+  /* branch bar */
+  .bbar{padding:6px;border-radius:12px;margin-bottom:12px;background:rgba(11,18,34,.92);backdrop-filter:none}
+  .bbar button{padding:6px 10px;font-size:13px}
+
+  /* collapsible branch cards */
+  .grid{gap:10px}
+  .branch{padding:0;border-radius:16px}
+  .branch-no{font-family:"IBM Plex Sans Thai";letter-spacing:0;font-size:12px;gap:10px;margin:0;padding:13px 14px;cursor:pointer;color:var(--muted)}
+  .branch-no .bl,.branch-no .bt{display:none}
+  .branch-no b{flex:0 0 auto;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;font-family:Kanit;font-size:14px;
+    background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.3)}
+  .branch-no .bsum{display:block;flex:1;min-width:0;font-size:15px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .branch-no .bcnt{display:block;flex:0 0 auto}
+  .branch-no .chev{display:block;flex:0 0 auto;width:18px;height:18px;transition:transform .25s}
+  .branch:not(.closed) .chev,.branch.qopen .chev{transform:rotate(180deg)}
+  .branch .tree{padding:0 12px 12px}
+  .branch.closed:not(.qopen) .tree{display:none}
+  .tree ul{padding-left:20px}
+  .tree ul>li::before{left:-12px}
+  .tree ul>li::after{left:-12px;width:9px}
+  .chip{white-space:normal;font-size:13.5px;min-height:32px}
+
+  /* tree overview */
+  .stage{height:calc(100dvh - 260px);min-height:380px;border-radius:16px}
+  .hint{right:60px;font-size:11.5px}
+  .hint .d{display:none} .hint .m{display:inline}
+
+  /* generations */
+  .gnav{flex-wrap:wrap}
+  .arrows button{width:38px;height:38px}
 }
 @media print{
   :root{--ink:#1d2433;--muted:#5d6680;--dim:#8a93a8;--stroke:#d8dde8;--stroke-2:#b9c1d3;--glass:#fff;--g1:#b7791f;--g2:#0e7490;--g3:#6d28d9;--g4:#be185d;--accent:#0e7490}
@@ -169,6 +222,7 @@ footer{margin-top:26px;text-align:center;color:var(--dim);font-size:12.5px}
   h1{color:#1d2433;background:none}
   .grid{grid-template-columns:1fr 1fr;gap:10px}
   .branch{backdrop-filter:none;break-inside:avoid;padding:10px}
+  .branch .tree{display:block!important}
   .chip{background:#fff}
 }
 </style>
@@ -220,7 +274,7 @@ footer{margin-top:26px;text-align:center;color:var(--dim);font-size:12.5px}
         <button id="zout" title="ซูมออก">−</button>
         <button id="zfit" title="พอดีจอ">⤢</button>
       </div>
-      <div class="hint">ลากเพื่อเลื่อน · สกรอลล์เพื่อซูม · คลิกชื่อเพื่อดูสายตรง</div>
+      <div class="hint"><span class="d">ลากเพื่อเลื่อน · สกรอลล์เพื่อซูม · คลิกชื่อเพื่อดูสายตรง</span><span class="m">ลากเลื่อน · ถ่างนิ้วซูม · แตะชื่อดูสายตรง</span></div>
     </div>
   </section>
 
@@ -334,9 +388,14 @@ function li(n){
   const kids = n.c && n.c.length ? `<ul>${n.c.map(li).join("")}</ul>` : "";
   return `<li class="g${n.gen}"><div class="unit">${unitHTML(n)}</div>${kids}</li>`;
 }
+const countP = n => n.p.length + (n.c || []).reduce((s, c) => s + countP(c), 0);
 document.getElementById("grid").innerHTML = families.map((f, i) =>
-  `<section class="branch" id="branch-${i + 1}"><div class="branch-no">BRANCH <b>${String(i + 1).padStart(2, "0")}</b> · สายที่ ${i + 1}</div><ul class="tree">${li(f)}</ul></section>`
+  `<section class="branch closed" id="branch-${i + 1}"><button type="button" class="branch-no" aria-expanded="false"><span class="bl">BRANCH </span><b>${String(i + 1).padStart(2, "0")}</b><span class="bt"> · สายที่ ${i + 1}</span><span class="bsum">${esc(nickOf(f))}</span><span class="bcnt">${countP(f)} คน</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button><ul class="tree">${li(f)}</ul></section>`
 ).join("");
+const setOpen = (s, open) => { s.classList.toggle("closed", !open); s.querySelector(".branch-no").setAttribute("aria-expanded", open); };
+document.getElementById("grid").addEventListener("click", e => {
+  const h = e.target.closest(".branch-no"); if (h) setOpen(h.parentElement, h.parentElement.classList.contains("closed"));
+});
 
 /* branch focus bar */
 const grid = document.getElementById("grid"), bbar = document.getElementById("bbar"), toolbar = document.querySelector(".toolbar");
@@ -349,6 +408,7 @@ function focusBranch(b){
   [...bbar.children].forEach(btn => btn.classList.toggle("on", +btn.dataset.b === b));
   grid.classList.toggle("focusing", b > 0);
   grid.querySelectorAll(".branch").forEach(s => s.classList.toggle("focus", s.id === "branch-" + b));
+  if (b > 0) setOpen(document.getElementById("branch-" + b), true);
   if (b > 0) document.getElementById("branch-" + b).scrollIntoView({behavior: "smooth", block: "start"});
   else window.scrollTo({top: 0, behavior: "smooth"});
   bbar.querySelector(".on")?.scrollIntoView({behavior: "smooth", inline: "nearest", block: "nearest"});
@@ -473,19 +533,36 @@ function centerOn(n){
   tx = r.width / 2 - (n.x + n.w / 2) * k; ty = r.height / 2 - n.cy * k; apply();
 }
 svg.addEventListener("wheel", e => { e.preventDefault(); const r = svg.getBoundingClientRect(); zoomAt(Math.exp(-e.deltaY * 0.0015), e.clientX - r.left, e.clientY - r.top); }, {passive: false});
-let drag = null;
-svg.addEventListener("pointerdown", e => { drag = {x: e.clientX, y: e.clientY, moved: 0, target: e.target}; svg.setPointerCapture(e.pointerId); svg.classList.add("drag"); });
+// drag to pan (mouse + 1 finger), pinch to zoom (2 fingers)
+const ptrs = new Map(); let drag = null, pinch = 0;
+svg.addEventListener("pointerdown", e => {
+  ptrs.set(e.pointerId, {x: e.clientX, y: e.clientY}); svg.setPointerCapture(e.pointerId);
+  if (ptrs.size === 1){ drag = {x: e.clientX, y: e.clientY, moved: 0, target: e.target}; svg.classList.add("drag"); }
+  else { pinch = 0; if (drag) drag.moved = 99; }
+});
 svg.addEventListener("pointermove", e => {
+  if (!ptrs.has(e.pointerId)) return;
+  ptrs.set(e.pointerId, {x: e.clientX, y: e.clientY});
+  if (ptrs.size >= 2){
+    const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y), r = svg.getBoundingClientRect();
+    if (pinch) zoomAt(d / pinch, (a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top);
+    pinch = d; return;
+  }
   if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
   drag.moved += Math.abs(dx) + Math.abs(dy); drag.x = e.clientX; drag.y = e.clientY; tx += dx; ty += dy; apply();
 });
-svg.addEventListener("pointerup", () => {
-  if (drag && drag.moved < 5){
+const pend = e => {
+  ptrs.delete(e.pointerId);
+  if (ptrs.size === 1){ const [p] = ptrs.values(); drag = {x: p.x, y: p.y, moved: 99, target: null}; pinch = 0; return; }
+  if (ptrs.size) return;
+  if (e.type === "pointerup" && drag && drag.moved < 8){
     const g = drag.target.closest && drag.target.closest(".tn[data-node]");
     g ? focusLineage(nodes[+g.dataset.node]) : clearTree();
   }
-  drag = null; svg.classList.remove("drag");
-});
+  drag = null; pinch = 0; svg.classList.remove("drag");
+};
+svg.addEventListener("pointerup", pend);
+svg.addEventListener("pointercancel", pend);
 const midZoom = f => { const r = svg.getBoundingClientRect(); zoomAt(f, r.width / 2, r.height / 2); };
 document.getElementById("zin").onclick = () => midZoom(1.25);
 document.getElementById("zout").onclick = () => midZoom(0.8);
@@ -511,7 +588,10 @@ function runSearch(){
   const hits = q ? nodes.filter(hit) : [];
   const ids = new Set(hits.map(n => n.id));
   document.querySelectorAll(".chip").forEach(c => c.classList.toggle("hit", !!q && c.dataset.q.includes(q)));
-  document.querySelectorAll(".branch").forEach((b, i) => b.classList.toggle("dim", !!q && !hits.some(n => n.branch === i + 1)));
+  document.querySelectorAll(".branch").forEach((b, i) => {
+    const has = hits.some(n => n.branch === i + 1);
+    b.classList.toggle("dim", !!q && !has); b.classList.toggle("qopen", has);
+  });
   document.querySelectorAll(".gitem").forEach(el => el.classList.toggle("dim", !!q && !ids.has(+el.dataset.node)));
   vp.querySelectorAll(".focus").forEach(el => el.classList.remove("focus"));
   vp.querySelectorAll(".tn[data-node]").forEach(el => { const on = ids.has(+el.dataset.node); el.classList.toggle("hit", on); el.classList.toggle("dim", !!q && !on); });
