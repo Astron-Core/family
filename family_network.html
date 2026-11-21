@@ -13,8 +13,7 @@
   --stroke:rgba(140,170,255,.16); --stroke-2:rgba(140,170,255,.32);
   --ink:#e8eeff; --muted:#8b97b8; --dim:#5a6585;
   --node:#0f1730;
-  --g1:#fbbf24; --g2:#22d3ee; --g3:#a78bfa; --g4:#f472b6;
-  --accent:#22d3ee; --accent-2:#a78bfa;
+  --g1:#fbbf24; --g2:#22d3ee; --g3:#a78bfa; --g4:#f472b6;  --accent:#22d3ee; --accent-2:#a78bfa;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -66,8 +65,7 @@ h1{font-family:Kanit;font-weight:600;font-size:clamp(30px,5vw,46px);line-height:
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* chips */
-.g1{--c:var(--g1)} .g2{--c:var(--g2)} .g3{--c:var(--g3)} .g4{--c:var(--g4)}
-.unit{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.g1{--c:var(--g1)} .g2{--c:var(--g2)} .g3{--c:var(--g3)} .g4{--c:var(--g4)}.unit{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .chip{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:4px 10px 4px 10px;border-radius:10px;
   background:linear-gradient(90deg,color-mix(in srgb,var(--c) 14%,transparent),rgba(255,255,255,.02));
   border:1px solid color-mix(in srgb,var(--c) 30%,transparent);border-left:3px solid var(--c);font-size:14px;white-space:nowrap;transition:.2s}
@@ -255,8 +253,7 @@ footer{margin-top:26px;text-align:center;color:var(--dim);font-size:12.5px}
       <span style="color:var(--g1)"><i style="background:var(--g1)"></i>รุ่น 1</span>
       <span style="color:var(--g2)"><i style="background:var(--g2)"></i>รุ่น 2</span>
       <span style="color:var(--g3)"><i style="background:var(--g3)"></i>รุ่น 3</span>
-      <span style="color:var(--g4)"><i style="background:var(--g4)"></i>รุ่น 4</span>
-    </div>
+      <span style="color:var(--g4)"><i style="background:var(--g4)"></i>รุ่น 4</span>    </div>
   </div>
 
   <section class="view" id="v-tree">
@@ -331,7 +328,9 @@ const families = [
   ]},
   {p:[["สมศักดิ์ แซ่อึ้ง","ออด"],["ธันยพร อ้นชู","นงค์"]], c:[
     {p:[["นิจณดา กาบคำ","นุ่น"]], c:[
-      {p:[["ศุภธาดา กาบคำ","โอชิ"]]},
+      {p:[["ศุภธาดา กาบคำ","โอชิ"],["ญาณีสา ภูมิอ่อน","แบม"]], c:[
+        {p:[["อัณณ์ชญา กาบคำ","เอญ่า"]]}
+      ]},
       {p:[["นิธิวรรธ สนธิ์น้อย","อั่งเปา"]]}
     ]}
   ]},
@@ -423,7 +422,7 @@ function placeBbar(){
 window.addEventListener("resize", placeBbar);
 
 /* ---------- generation view ---------- */
-document.getElementById("gens").innerHTML = [1, 2, 3, 4].map(g => {
+document.getElementById("gens").innerHTML = Array.from({length: maxGen}, (_, i) => i + 1).map(g => {
   const list = nodes.filter(n => n.gen === g);
   const cnt = list.reduce((s, n) => s + n.p.length, 0);
   return `<div class="gcol g${g}"><h3>รุ่นที่ ${g}<small>${cnt} คน</small></h3>${
